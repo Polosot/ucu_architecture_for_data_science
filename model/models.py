@@ -1,6 +1,28 @@
 import torch
 from torch import nn
 
+IMAGE_HEIGHT = 96
+IMAGE_WIDTH = 96
+IMAGE_CHANNELS = 1
+
+ELEMENTS = [
+    'left_eye_center',
+    'right_eye_center',
+    'nose_tip',
+    'mouth_center_bottom_lip',
+    'left_eye_inner_corner',
+    'left_eye_outer_corner',
+    'left_eyebrow_inner_end',
+    'left_eyebrow_outer_end',
+    'mouth_center_top_lip',
+    'mouth_left_corner',
+    'mouth_right_corner',
+    'right_eye_inner_corner',
+    'right_eye_outer_corner',
+    'right_eyebrow_inner_end',
+    'right_eyebrow_outer_end'
+]
+
 
 class CNNModel(nn.Module):
 

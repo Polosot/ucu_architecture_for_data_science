@@ -1,1 +1,4 @@
 flask
+Pillow
+numpy
+torchvision
