@@ -17,7 +17,7 @@ cd ucu_architecture_for_data_science
 
 2. Setup virtual environment:
 ```
-python3 -m venv  env
+python -m venv  env
 source env/bin/activate
 ```
 
