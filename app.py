@@ -18,9 +18,7 @@ def upload_file():
     if request.method == 'POST':
         f = request.files['file']
         image = Image.open(BytesIO(f.read()))
-        if image.mode != 'L':
-            image = image.convert('L')
-        predictor.predict(image)
+        predictor.add_points(image)
 
         return 'file uploaded successfully'
 
