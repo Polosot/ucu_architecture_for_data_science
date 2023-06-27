@@ -28,19 +28,19 @@ class CNNModel(nn.Module):
 
     def __init__(self):
         super(CNNModel, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=5, stride=1, padding=2)
         self.act1 = nn.ReLU()
         self.pool1 = nn.MaxPool2d(kernel_size=2)
-        self.conv2 = nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=5, stride=1, padding=2)
         self.act2 = nn.ReLU()
         self.pool2 = nn.MaxPool2d(kernel_size=2)
-        self.conv3 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.conv3 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=5, stride=1, padding=2)
         self.act3 = nn.ReLU()
         self.pool3 = nn.MaxPool2d(kernel_size=2)
-        self.conv4 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.conv4 = nn.Conv2d(in_channels=128, out_channels=256, kernel_size=5, stride=1, padding=2)
         self.act4 = nn.ReLU()
         self.pool4 = nn.MaxPool2d(kernel_size=2)
-        self.conv5 = nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1)
+        self.conv5 = nn.Conv2d(in_channels=256, out_channels=256, kernel_size=5, stride=1, padding=2)
         self.act5 = nn.ReLU()
         self.pool5 = nn.MaxPool2d(kernel_size=2)
         self.flatten1 = nn.Flatten(1)
@@ -76,9 +76,9 @@ class Stage1Model(nn.Module):
     def __init__(self):
         super(Stage1Model, self).__init__()
         self.cnn_model = CNNModel()
-        self.fc1 = nn.Linear(256 * 3 * 3, 256 * 3 * 3)
+        self.fc1 = nn.Linear(256 * 3 * 3, 256)
         self.act1 = nn.Tanh()
-        self.fc2 = nn.Linear(256 * 3 * 3, 8)
+        self.fc2 = nn.Linear(256, 8)
         self.sgm = nn.Sigmoid()
 
     def forward(self, x):
@@ -99,9 +99,9 @@ class MixedModel(nn.Module):
         self.stage_1_model = Stage1Model()
         self.cnn_model = CNNModel()
 
-        self.fc1 = nn.Linear(256 * 3 * 3 + 8, 256 * 3 * 3)
+        self.fc1 = nn.Linear(256 * 3 * 3 + 8, 768)
         self.act1 = nn.Tanh()
-        self.fc2 = nn.Linear(256 * 3 * 3, 22)
+        self.fc2 = nn.Linear(768, 22)
         self.sgm = nn.Sigmoid()
 
     def forward(self, x):

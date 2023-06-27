@@ -41,5 +41,7 @@ class KeyPointPredictor:
         key_points = self.predict(image)
         drawer = ImageDraw.Draw(image)
 
+        marker_half_size = int(min(image.size) * 0.005)
+
         for p in key_points:
-            drawer.rectangle(((p[0]-1, p[1]-1), (p[0]+1, p[1]+1)), fill="red")
+            drawer.rectangle(((p[0]-marker_half_size, p[1]-marker_half_size), (p[0]+marker_half_size, p[1]+marker_half_size)), fill="yellow")

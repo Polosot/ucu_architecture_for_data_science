@@ -7,7 +7,7 @@ from base64 import b64encode
 
 
 app = Flask(__name__)
-predictor = KeyPointPredictor()
+predictor = KeyPointPredictor(model_file='artifacts/mixed_model_weights.pkl')
 
 
 @app.route('/')
