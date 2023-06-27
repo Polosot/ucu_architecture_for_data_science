@@ -11,7 +11,7 @@
 1. Clone git repo:
 
 ```
-git@github.com:Polosot/ucu_architecture_for_data_science.git
+git clone git@github.com:Polosot/ucu_architecture_for_data_science.git
 cd ucu_architecture_for_data_science
 ```
 
