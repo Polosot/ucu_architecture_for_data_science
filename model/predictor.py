@@ -42,12 +42,12 @@ class KeyPointPredictor:
         )
 
         faces = face_classifier.detectMultiScale(
-            np.array(gs_image), scaleFactor=1.1, minNeighbors=5, minSize=(40, 40)
+            np.array(gs_image), scaleFactor=1.1, minNeighbors=3, minSize=(40, 40)
         )
 
         return faces
 
-    def add_points(self, image):
+    def add_points(self, image, add_bb=True):
         # convert to greyscale
         gs_image = image.convert('L') if image.mode != 'L' else image
 
@@ -56,6 +56,7 @@ class KeyPointPredictor:
 
         # predict key points
         key_points = []
+        bboxes = []
         for face in faces:
             x, y, w, h = face
             im_face = gs_image.crop((x, y, x+w, y+h))
@@ -63,10 +64,16 @@ class KeyPointPredictor:
             for kp in face_key_points:
                 key_points.append((kp[0]+x, kp[1]+y))
 
+            if add_bb:
+                bboxes.append((x, y, x+w, y+h))
+
         drawer = ImageDraw.Draw(image)
         marker_half_size = int(min(image.size) * 0.005)
         for p in key_points:
             drawer.rectangle(((p[0]-marker_half_size, p[1]-marker_half_size), (p[0]+marker_half_size, p[1]+marker_half_size)), fill="yellow")
+
+        for bb in bboxes:
+            drawer.rectangle(bb, fill=None, outline="red", width=3)
 
     def process_frames(self, frames):
 

@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<style>
+    #Progress_Status {
+      width: 50%;
+      background-color: #ddd;
+    }
+    #myprogressBar {
+      width: 2%;
+      height: 20px;
+      background-color: #4CAF50;
+    }
+    </style>
+
 <head>
     <meta charset="UTF-8">
     <title>Facepoints</title>
@@ -15,10 +28,34 @@
 
 <h2>Upload video</h2>
       <form action = "video_uploader" method = "POST"
-         enctype = "multipart/form-data">
+         enctype = "multipart/form-data" id="video_form">
          <input type = "file" name = "file" />
-         <input type = "submit"/>
+         <input onclick="update()" type = "submit"/>
       </form>
+
+        <div id="Progress_Status">
+            <div id="myprogressBar"></div>
+          </div>
+
+    <script>
+    function update() {
+
+        var video_form = document.getElementById("video_form");
+        video_form.style.display = 'none';
+
+        var element = document.getElementById("myprogressBar");
+        var width = 1;
+        var identity = setInterval(scene, 1);
+        function scene() {
+        if (width >= 100) {
+            clearInterval(identity);
+        } else {
+            width++;
+            element.style.width = width + '%';
+            }
+        }
+    }
+    </script>
 
 </body>
 </html>
