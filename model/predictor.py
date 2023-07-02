@@ -5,6 +5,7 @@ from PIL import Image
 from torchvision import transforms
 import numpy as np
 from PIL import ImageDraw
+import cv2
 
 
 class KeyPointPredictor:
@@ -15,18 +16,17 @@ class KeyPointPredictor:
             self.model.load_state_dict(torch.load(model_file))
         self.model.eval()
 
-    def predict(self, image):
+    def predict(self, gs_image):
 
-        if image.mode != 'L':
-            image = image.convert('L')
+        self.detect_faces(gs_image)
 
-        width, height = image.size
+        width, height = gs_image.size
 
         if width != IMAGE_WIDTH or height != IMAGE_HEIGHT:
-            image = image.resize((IMAGE_WIDTH, IMAGE_HEIGHT), Image.LANCZOS)
+            gs_image = gs_image.resize((IMAGE_WIDTH, IMAGE_HEIGHT), Image.LANCZOS)
 
         convert_tensor = transforms.ToTensor()
-        resized_image_tensor = convert_tensor(image)
+        resized_image_tensor = convert_tensor(gs_image)
         assert tuple(resized_image_tensor.shape) == (IMAGE_CHANNELS, IMAGE_WIDTH, IMAGE_HEIGHT)
 
         resized_image_tensor = resized_image_tensor.view([1, IMAGE_CHANNELS, IMAGE_WIDTH, IMAGE_HEIGHT])
@@ -36,12 +36,42 @@ class KeyPointPredictor:
 
         return key_points
 
+    def detect_faces(self, gs_image):
+        face_classifier = cv2.CascadeClassifier(
+            cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+        )
+
+        faces = face_classifier.detectMultiScale(
+            np.array(gs_image), scaleFactor=1.1, minNeighbors=5, minSize=(40, 40)
+        )
+
+        return faces
+
     def add_points(self, image):
+        # convert to greyscale
+        gs_image = image.convert('L') if image.mode != 'L' else image
 
-        key_points = self.predict(image)
+        # detect faces
+        faces = self.detect_faces(gs_image)
+
+        # predict key points
+        key_points = []
+        for face in faces:
+            x, y, w, h = face
+            im_face = gs_image.crop((x, y, x+w, y+h))
+            face_key_points = self.predict(im_face)
+            for kp in face_key_points:
+                key_points.append((kp[0]+x, kp[1]+y))
+
         drawer = ImageDraw.Draw(image)
-
         marker_half_size = int(min(image.size) * 0.005)
-
         for p in key_points:
             drawer.rectangle(((p[0]-marker_half_size, p[1]-marker_half_size), (p[0]+marker_half_size, p[1]+marker_half_size)), fill="yellow")
+
+    def process_frames(self, frames):
+
+        for i in range(frames.shape[0]):
+            image = Image.fromarray(frames[i])
+            self.add_points(image)
+            yield image
+

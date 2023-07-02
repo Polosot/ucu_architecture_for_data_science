@@ -2,3 +2,5 @@ flask
 Pillow
 numpy
 torchvision
+opencv-python
+imageio[ffmpeg]

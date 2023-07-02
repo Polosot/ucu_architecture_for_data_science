@@ -31,5 +31,9 @@ python app.py
 ```
 5. Open: http://localhost:5000
 
-6. Choose an image from the [test_images](test_images) subdirectory and submit. 
-## 
+6. Choose an image from the [test_images](test_images) subdirectory and submit.
+
+## Changes of the final version:
+
+1. Detect faces with `cv2` and crop them for the predictor (higher performance + possibility to work with multiple faces)
+2. Play video
