@@ -18,8 +18,6 @@ class KeyPointPredictor:
 
     def predict(self, gs_image, small_model=False):
 
-        self.detect_faces(gs_image)
-
         width, height = gs_image.size
 
         if width != IMAGE_WIDTH or height != IMAGE_HEIGHT:
@@ -47,7 +45,7 @@ class KeyPointPredictor:
 
         return faces
 
-    def add_points(self, image, add_bb=True):
+    def add_points(self, image, add_bb=True, small_model=False):
         # convert to greyscale
         gs_image = image.convert('L') if image.mode != 'L' else image
 
@@ -60,7 +58,7 @@ class KeyPointPredictor:
         for face in faces:
             x, y, w, h = face
             im_face = gs_image.crop((x, y, x+w, y+h))
-            face_key_points = self.predict(im_face)
+            face_key_points = self.predict(im_face, small_model=small_model)
             for kp in face_key_points:
                 key_points.append((kp[0]+x, kp[1]+y))
 
@@ -75,10 +73,10 @@ class KeyPointPredictor:
         for bb in bboxes:
             drawer.rectangle(bb, fill=None, outline="red", width=3)
 
-    def process_frames(self, frames):
+    def process_frames(self, frames, small_model=False):
 
         for i in range(frames.shape[0]):
             image = Image.fromarray(frames[i])
-            self.add_points(image)
+            self.add_points(image, small_model=small_model)
             yield image
 
