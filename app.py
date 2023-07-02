@@ -23,7 +23,7 @@ def upload_image():
     if request.method == 'POST':
         f = request.files['file']
         image = Image.open(BytesIO(f.read()))
-        predictor.add_points(image)
+        predictor.process_image(image)
 
         modified_image = BytesIO()
         image.save(modified_image, format='PNG')
