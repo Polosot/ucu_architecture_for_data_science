@@ -1,12 +1,13 @@
-from flask import Flask, request
-from flask import render_template
-from PIL import Image
-from io import BytesIO
-from model.predictor import KeyPointPredictor
 from base64 import b64encode
+from io import BytesIO
+
 import imageio.v3 as iio
 import numpy as np
+from PIL import Image
+from flask import Flask, request
+from flask import render_template
 
+from model.predictor import KeyPointPredictor
 
 app = Flask(__name__)
 predictor = KeyPointPredictor(model_file='artifacts/mixed_model_weights.pkl')
@@ -42,7 +43,7 @@ def upload_video():
             frames = iio.imread(fb, extension=extension)
             fps = iio.immeta(fb, extension=extension)['fps']
 
-            frames_changed = np.array([np.array(image) for image in predictor.process_frames(frames)])
+            frames_changed = np.array([np.array(image) for image in predictor.process_frames(frames, small_model=False)])
             fb_changed = iio.imwrite('<bytes>', frames_changed, extension='.mp4', fps=fps)  #TODO: extension?
 
             dataurl = 'data:video/mp4;base64,' + b64encode(fb_changed).decode('ascii')
