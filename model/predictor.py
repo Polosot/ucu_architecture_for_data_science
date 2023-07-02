@@ -16,7 +16,7 @@ class KeyPointPredictor:
             self.model.load_state_dict(torch.load(model_file))
         self.model.eval()
 
-    def predict(self, gs_image):
+    def predict(self, gs_image, small_model=False):
 
         self.detect_faces(gs_image)
 
@@ -31,7 +31,7 @@ class KeyPointPredictor:
 
         resized_image_tensor = resized_image_tensor.view([1, IMAGE_CHANNELS, IMAGE_WIDTH, IMAGE_HEIGHT])
 
-        prediction = self.model(resized_image_tensor)
+        prediction = self.model.stage_1_model(resized_image_tensor) if small_model else self.model(resized_image_tensor)
         key_points = prediction.view([-1, 2]).detach().numpy() * np.array([[width, height]])
 
         return key_points
