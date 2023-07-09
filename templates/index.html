@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Upload image</h2>
-<form action="image_uploader" method="POST"
-      enctype="multipart/form-data">
-    <input type="file" name="file"/>
-    <input type="submit"/>
-</form>
+<h2>Upload file</h2>
+    <p>Upload an image or video file.</p>
+    <form action="file_uploader" method="POST"
+          enctype="multipart/form-data">
+        <input type="file" name="file"/>
 
-<h2>Upload video</h2>
-<form action="video_uploader" method="POST"
-      enctype="multipart/form-data" id="video_form">
-    <input type="file" name="file"/>
-    <input onclick="update()" type="submit"/>
-</form>
+        <div>
+          <input type="radio" id="big_model" name="model_selector" value="big" checked>
+          <label for="big_model">Big model (15 face points)</label>
+        </div>
 
-<div id="Progress_Status">
-    <div id="myprogressBar"></div>
+        <div>
+          <input type="radio" id="small_model" name="model_selector" value="small">
+          <label for="small_model">Small model (4 face points)</label>
+        </div>
+
+        <input type="submit"/>
+    </form>
+
+<div style="width: 100px; height: 100px;" hidden=true>
+    <img src="{{ url_for('static', filename = 'progress.gif') }}">
 </div>
 
 <script>
@@ -40,8 +45,4 @@
     }
 </script>
 
-
-<div style="width: 100px; height: 100px;">
-    <img src="{{ url_for('static', filename = 'progress.gif') }}">
-</div>
 {% endblock %}

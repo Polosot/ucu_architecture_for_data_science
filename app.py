@@ -43,8 +43,8 @@ def hello(name=None):
     return render_template('index.html', name=name)
 
 
-@app.route('/image_uploader', methods=['GET', 'POST'])
-def upload_image():
+@app.route('/file_uploader', methods=['GET', 'POST'])
+def upload_file():
     if request.method == 'POST':
         f = request.files['file']
         image = Image.open(BytesIO(f.read()))
