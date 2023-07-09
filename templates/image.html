@@ -1,16 +1,6 @@
-{% extends "base.html" %}
-{% block content %}
-    <form action = "image_uploader" method = "POST"
-     enctype = "multipart/form-data">
-     <input type = "file" name = "file" />
-     <input type = "submit"/>
-    </form>
-
-    <!--<center>
-     <image src="{{ image_data }}"></image>
-    </center>-->
-
-    <div style="width: 100px; height: 100px;">
-        <img src="{{ image_data }}" width="250%" height="250%">
+{% extends "base_result.html" %}
+{% block result %}
+    <div style="margin: 10px auto;">
+        <img src="{{ image_data }}" width={{ image_width }} height={{ image_height }}>
     </div>
 {% endblock %}
