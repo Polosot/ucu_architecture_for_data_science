@@ -58,7 +58,7 @@ def process_video(f, small_model=False):
         [np.array(image) for image in predictor.process_frames(frames, small_model=small_model)])
     modified_media_bytes = iio.imwrite('<bytes>', frames_changed, extension='.mp4', fps=fps)
     output_mimetype = 'video/mp4'
-    return f"data:{output_mimetype};base64,{b64encode(modified_media_bytes.getvalue()).decode('ascii')}"
+    return f"data:{output_mimetype};base64,{b64encode(modified_media_bytes).decode('ascii')}"
 
 
 @app.route('/')
