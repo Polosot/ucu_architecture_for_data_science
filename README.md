@@ -6,6 +6,12 @@
 
 #### Student: Maksym Sarana
 
+## branches:
+
+- hw1_mvp - MVP
+
+- hw2_final - final version
+
 ## How to use:
 
 1. Clone git repo:
