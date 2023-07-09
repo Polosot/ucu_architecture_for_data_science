@@ -31,13 +31,21 @@ source env/bin/activate
 ```
 pip install -r requirements.txt
 ```
-4. Run application:
+
+4. Install `ffmpeg` (for video processing)
+ 
+Ubuntu: ```sudo apt install ffmpeg```
+MacOS: ```brew install ffmpeg```
+ 
+Or download / follow instructions from https://ffmpeg.org/
+
+5. Run application:
 ```
 python app.py
 ```
-5. Open: http://localhost:5000
+6. Open: http://localhost:5000
 
-6. Choose a file from the [test_media](test_media) subdirectory and submit.
+7. Choose a file from the [test_media](test_media) subdirectory and submit.
 
 ## Changes of the final version:
 
