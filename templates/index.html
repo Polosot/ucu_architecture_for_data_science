@@ -2,9 +2,8 @@
 {% block content %}
 
 <h2>Upload file</h2>
-    <p>Upload an image or video file.</p>
-    <form action="file_uploader" method="POST"
-          enctype="multipart/form-data">
+    <p>Upload an image or video file (video processing may be time-consuming).</p>
+    <form action="file_uploader" method="POST" enctype="multipart/form-data">
         <input type="file" name="file"/>
 
         <div>
@@ -17,31 +16,18 @@
           <label for="small_model">Small model (4 face points)</label>
         </div>
 
-        <input type="submit"/>
+        <input type="submit" onclick="show_progress()" />
     </form>
 
-<div style="width: 100px; height: 100px;" hidden=true>
-    <img src="{{ url_for('static', filename = 'progress.gif') }}">
+<div id="progress_div" hidden=true>
+    <img src="{{ url_for('static', filename = 'progress.gif') }}" />
+    <p>Processing of video and large images may be time-consuming...</p>
 </div>
 
 <script>
-    function update() {
-
-        var video_form = document.getElementById("video_form");
-        video_form.style.display = 'none';
-
-        var element = document.getElementById("myprogressBar");
-        var width = 1;
-        var identity = setInterval(scene, 1);
-
-        function scene() {
-            if (width >= 100) {
-                clearInterval(identity);
-            } else {
-                width++;
-                element.style.width = width + '%';
-            }
-        }
+    function show_progress() {
+        var progress_div = document.getElementById("progress_div");
+        progress_div.hidden = false;
     }
 </script>
 

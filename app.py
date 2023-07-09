@@ -12,6 +12,15 @@ app = Flask(__name__, static_folder="static")
 predictor = KeyPointPredictor(model_file='artifacts/mixed_model_weights.pkl')
 
 
+
+
+
+@app.route('/')
+def hello(name=None):
+    return render_template('index.html', name=name)
+
+
+@app.route('/file_uploader', methods=['GET', 'POST'])
 def submit_media():
     f = request.files['file']
     small_model = (request.form.get('model_selector') == 'small')
@@ -24,6 +33,7 @@ def submit_media():
         modified_media_bytes = BytesIO()
         image.save(modified_media_bytes, format='PNG')
         output_mimetype = 'image/png'
+
     elif f.mimetype.startswith('video/'):
         fb = f.read()
         extension = '.' + f.mimetype.split('/', maxsplit=1)[-1]
@@ -38,25 +48,6 @@ def submit_media():
         raise NotImplementedError(f"Mimetype {f.mimetype} is not implemented")
 
     return f"data:{output_mimetype};base64,{b64encode(modified_media_bytes.getvalue()).decode('ascii')}"
-
-
-@app.route('/')
-def hello(name=None):
-    return render_template('index.html', name=name)
-
-
-@app.route('/file_uploader', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        f = request.files['file']
-        image = Image.open(BytesIO(f.read()))
-        predictor.process_image(image)
-
-        modified_image = BytesIO()
-        image.save(modified_image, format='PNG')
-        dataurl = 'data:image/png;base64,' + b64encode(modified_image.getvalue()).decode('ascii')
-
-        return render_template('image.html', image_data=dataurl)
 
 
 @app.route('/video_uploader', methods=['GET', 'POST'])
