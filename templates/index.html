@@ -1,43 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<style>
-    #Progress_Status {
-      width: 50%;
-      background-color: #ddd;
-    }
-    #myprogressBar {
-      width: 2%;
-      height: 20px;
-      background-color: #4CAF50;
-    }
-    </style>
-
 <head>
     <meta charset="UTF-8">
     <title>Facepoints</title>
 </head>
+
 <body>
 
 <h2>Upload image</h2>
-      <form action = "image_uploader" method = "POST"
-         enctype = "multipart/form-data">
-         <input type = "file" name = "file" />
-         <input type = "submit"/>
-      </form>
+<form action="image_uploader" method="POST"
+      enctype="multipart/form-data">
+    <input type="file" name="file"/>
+    <input type="submit"/>
+</form>
 
 <h2>Upload video</h2>
-      <form action = "video_uploader" method = "POST"
-         enctype = "multipart/form-data" id="video_form">
-         <input type = "file" name = "file" />
-         <input onclick="update()" type = "submit"/>
-      </form>
+<form action="video_uploader" method="POST"
+      enctype="multipart/form-data" id="video_form">
+    <input type="file" name="file"/>
+    <input onclick="update()" type="submit"/>
+</form>
 
-        <div id="Progress_Status">
-            <div id="myprogressBar"></div>
-          </div>
+<div id="Progress_Status">
+    <div id="myprogressBar"></div>
+</div>
 
-    <script>
+<script>
     function update() {
 
         var video_form = document.getElementById("video_form");
@@ -46,16 +35,21 @@
         var element = document.getElementById("myprogressBar");
         var width = 1;
         var identity = setInterval(scene, 1);
+
         function scene() {
-        if (width >= 100) {
-            clearInterval(identity);
-        } else {
-            width++;
-            element.style.width = width + '%';
+            if (width >= 100) {
+                clearInterval(identity);
+            } else {
+                width++;
+                element.style.width = width + '%';
             }
         }
     }
-    </script>
+</script>
 
+
+<div style="width: 100px; height: 100px;">
+    <img src="{{ url_for('static', filename = 'progress.gif') }}">
+</div>
 </body>
 </html>
