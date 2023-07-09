@@ -35,6 +35,7 @@ pip install -r requirements.txt
 4. Install `ffmpeg` (for video processing)
  
 Ubuntu: ```sudo apt install ffmpeg```
+
 MacOS: ```brew install ffmpeg```
  
 Or download / follow instructions from https://ffmpeg.org/
