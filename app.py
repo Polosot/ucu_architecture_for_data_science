@@ -12,8 +12,10 @@ app = Flask(__name__, static_folder="static")
 predictor = KeyPointPredictor(model_file='artifacts/mixed_model_weights.pkl')
 
 
-def submit_media(small_model=False):
+def submit_media():
     f = request.files['file']
+    small_model = (request.form.get('model_selector') == 'small')
+
     if f.mimetype.startswith('image/'):
         image = Image.open(BytesIO(f.read()))
 
